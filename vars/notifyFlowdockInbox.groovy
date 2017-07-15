@@ -63,6 +63,6 @@ def notifyFlowdockInbox(apiToken, tags) {
     def postRC = post.getResponseCode();
     if (postRC.equals(200)) {
       // whoop
-    {
+    }
 }
 
