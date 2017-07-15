@@ -60,7 +60,7 @@ def call(script, apiToken, tags = '') {
 
     //println("Content: ${content}")
 
-    //content.append("URL: <a href=\"").append(script.env.BUILD_URL).append("\">").append(script.currentBuild.fullDisplayName).append("</a>").append("<br />");
+    content.append("URL: <a href=\"").append(script.env.BUILD_URL).append("\">").append(script.currentBuild.fullDisplayName).append("</a>").append("<br />");
 
     println("Content: ${content}")
 
