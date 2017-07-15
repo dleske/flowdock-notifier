@@ -51,7 +51,7 @@ def call(script, apiToken, tags = '') {
     def content = """<h3>${script.env.JOB_BASE_NAME}</h3>
       Build: ${script.env.JOB_BASE_NAME}<br />
       Result: <strong>${buildStatus}<br />
-      URL: <a href=\"${script.env.BUILD_URL}\">${script.currentBuild.fullDisplayName}</a><br />"""
+      URL: <a href="${script.env.BUILD_URL}">${script.currentBuild.fullDisplayName}</a><br />"""
 
     //content.append("<h3>").append(script.env.JOB_BASE_NAME).append("</h3>");
     //content.append("Build: ").append(script.currentBuild.displayName).append("<br />");
