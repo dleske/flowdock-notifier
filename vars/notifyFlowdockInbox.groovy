@@ -61,8 +61,6 @@ def notifyFlowdockInbox(apiToken, tags) {
     post.setRequestProperty("Content-Type", "application/json")
     post.getOutputStream().write(payload.getBytes("UTF-8"));
     def postRC = post.getResponseCode();
-    if (postRC.equals(200)) {
-      // whoop
-    }
+    println("Received response: " + postRC);
 }
 
