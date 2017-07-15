@@ -4,12 +4,14 @@ import java.net.URLEncoder
 import hudson.model.Result
 
 def call(script, apiToken, tags = '') {
-    println('Entering notifyFlowdockInbox');
     tags = tags.replaceAll("\\s","")
     // build status of null means successful
     def buildStatus =  script.currentBuild.result ? script.currentBuild.result : 'SUCCESS'
     def subject = "${script.env.JOB_BASE_NAME} build ${script.currentBuild.displayName.replaceAll("#", "")}"
     def fromAddress = ''
+
+    println("Build status: ${buildStatus}")
+
     switch (buildStatus) {
       case 'SUCCESS':
         def prevResult = script.currentBuild.getPreviousBuild() != null ? script.currentBuild.getPreviousBuild().getResult() : null;
@@ -41,6 +43,9 @@ def call(script, apiToken, tags = '') {
         fromAddress = 'build+ok@flowdock.com'
         break
     }
+
+    println("Subject: ${subject}")
+
     StringBuilder content = new StringBuilder();
     content.append("<h3>").append(script.env.JOB_BASE_NAME).append("</h3>");
     content.append("Build: ").append(script.currentBuild.displayName).append("<br />");
