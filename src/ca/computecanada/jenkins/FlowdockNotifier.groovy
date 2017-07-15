@@ -1,13 +1,13 @@
-package ca.computecanada.jenkins
-
 // this was cribbed from https://github.com/jenkinsci/flowdock-plugin/issues/24
 import groovy.json.JsonOutput
 import java.net.URLEncoder
 import hudson.model.Result
 
+package ca.computecanada.jenkins
+
 class FlowdockNotifier {
+
   static def notifyFlowdock(script, apiToken, tags) {
-    echo "What!  hello!"
     println('Entering notifyFlowdockInbox');
     tags = tags.replaceAll("\\s","")
     // build status of null means successful
@@ -69,4 +69,3 @@ class FlowdockNotifier {
     println("Received response: " + postRC);
   }
 }
-
