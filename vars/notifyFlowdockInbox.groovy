@@ -4,6 +4,7 @@ import java.net.URLEncoder
 import hudson.model.Result
 
 def notifyFlowdockInbox(apiToken, tags) {
+    echo "What!  hello!";
     println('Entering notifyFlowdockInbox');
     tags = tags.replaceAll("\\s","")
     // build status of null means successful
