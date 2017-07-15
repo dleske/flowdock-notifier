@@ -53,8 +53,17 @@ def call(script, apiToken, tags = '') {
     println("Content: ${content}")
 
     content.append("Build: ").append(script.currentBuild.displayName).append("<br />");
+
+    println("Content: ${content}")
+
     content.append("Result: <strong>").append(script.buildStatus).append("</strong><br />");
+
+    println("Content: ${content}")
+
     content.append("URL: <a href=\"").append(script.env.BUILD_URL).append("\">").append(script.currentBuild.fullDisplayName).append("</a>").append("<br />");
+
+    println("Content: ${content}")
+
     def flowdockURL = "https://api.flowdock.com/v1/messages/team_inbox/${apiToken}"
     def payload = JsonOutput.toJson([source : "Jenkins",
                                      project : script.env.JOB_BASE_NAME,
