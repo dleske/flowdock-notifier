@@ -3,6 +3,12 @@ import groovy.json.JsonOutput
 import java.net.URLEncoder
 import hudson.model.Result
 
+def justPrintStatus(script, args) {
+  echo "Seriously!";
+  echo "Here we are in justPrintStatus";
+  echo "Build status: ${script.currentBuild.result}";
+}
+
 def notifyFlowdockInbox(apiToken, tags) {
     echo "What!  hello!";
     println('Entering notifyFlowdockInbox');
