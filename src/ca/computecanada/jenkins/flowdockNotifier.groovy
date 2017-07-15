@@ -1,26 +1,23 @@
+package ca.computecanada.jenkins;
+
 // this was cribbed from https://github.com/jenkinsci/flowdock-plugin/issues/24
 import groovy.json.JsonOutput
 import java.net.URLEncoder
 import hudson.model.Result
 
-def justPrintStatus(script, args) {
-  echo "Seriously!"
-  echo "Here we are in justPrintStatus"
-  echo "Build status: ${script.currentBuild.result}"
-}
-
-def notifyFlowdockInbox(apiToken, tags) {
+class FlowdockNotifier {
+  static def notifyFlowdock(script, apiToken, tags) {
     echo "What!  hello!"
     println('Entering notifyFlowdockInbox');
     tags = tags.replaceAll("\\s","")
     // build status of null means successful
-    def buildStatus =  currentBuild.result ? currentBuild.result : 'SUCCESS'
-    def subject = "${env.JOB_BASE_NAME} build ${currentBuild.displayName.replaceAll("#", "")}"
+    def buildStatus =  script.currentBuild.result ? script.currentBuild.result : 'SUCCESS'
+    def subject = "${script.env.JOB_BASE_NAME} build ${script.currentBuild.displayName.replaceAll("#", "")}"
     def fromAddress = ''
     switch (buildStatus) {
       case 'SUCCESS':
-        def prevResult = currentBuild.getPreviousBuild() != null ? currentBuild.getPreviousBuild().getResult() : null;
-        if (Result.FAILURE.toString().equals(prevResult) || Result.UNSTABLE.toString().equals(prevResult)) {
+        def prevResult = script.currentBuild.getPreviousBuild() != null ? script.currentBuild.getPreviousBuild().getResult() : null;
+        if (script.Result.FAILURE.toString().equals(prevResult) || script.Result.UNSTABLE.toString().equals(prevResult)) {
           subject += ' was fixed'
           fromAddress = 'build+ok@flowdock.com'
           break
@@ -49,19 +46,19 @@ def notifyFlowdockInbox(apiToken, tags) {
         break
     }
     StringBuilder content = new StringBuilder();
-    content.append("<h3>").append(env.JOB_BASE_NAME).append("</h3>");
-    content.append("Build: ").append(currentBuild.displayName).append("<br />");
-    content.append("Result: <strong>").append(buildStatus).append("</strong><br />");
-    content.append("URL: <a href=\"").append(env.BUILD_URL).append("\">").append(currentBuild.fullDisplayName).append("</a>").append("<br />");
+    content.append("<h3>").append(script.env.JOB_BASE_NAME).append("</h3>");
+    content.append("Build: ").append(script.currentBuild.displayName).append("<br />");
+    content.append("Result: <strong>").append(script.buildStatus).append("</strong><br />");
+    content.append("URL: <a href=\"").append(script.env.BUILD_URL).append("\">").append(script.currentBuild.fullDisplayName).append("</a>").append("<br />");
     def flowdockURL = "https://api.flowdock.com/v1/messages/team_inbox/${apiToken}"
     def payload = JsonOutput.toJson([source : "Jenkins",
-                                     project : env.JOB_BASE_NAME,
+                                     project : script.env.JOB_BASE_NAME,
                                      from_address: fromAddress,
                                      from_name: 'CI',
                                      subject: subject,
                                      tags: tags,
                                      content: content,
-                                     link: env.BUILD_URL
+                                     link: script.env.BUILD_URL
                        ])
     def post = new URL(flowdockURL).openConnection();
     post.setRequestMethod("POST");
