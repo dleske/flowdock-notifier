@@ -1,4 +1,4 @@
-package ca.computecanada.jenkins;
+package ca.computecanada.jenkins
 
 // this was cribbed from https://github.com/jenkinsci/flowdock-plugin/issues/24
 import groovy.json.JsonOutput
@@ -67,5 +67,6 @@ class FlowdockNotifier {
     post.getOutputStream().write(payload.getBytes("UTF-8"));
     def postRC = post.getResponseCode();
     println("Received response: " + postRC);
+  }
 }
 
