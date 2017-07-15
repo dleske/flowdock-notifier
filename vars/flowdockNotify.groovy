@@ -38,6 +38,7 @@ def call(script, apiToken, tags = '') {
       case 'NOT_BUILT':
         subject += ' was not built'
         fromAddress = 'build+fail@flowdock.com'
+        break
       case 'FIXED':
         subject = ' was fixed'
         fromAddress = 'build+ok@flowdock.com'
@@ -60,7 +61,10 @@ def call(script, apiToken, tags = '') {
                                      tags: tags,
                                      content: content,
                                      link: script.env.BUILD_URL
-                       ])
+                                     ])
+
+    println("Payload: ${payload}")
+
     def post = new URL(flowdockURL).openConnection();
     post.setRequestMethod("POST");
     post.setDoOutput(true);
