@@ -15,7 +15,7 @@ def call(script, apiToken, tags = '') {
     switch (buildStatus) {
       case 'SUCCESS':
         def prevResult = script.currentBuild.getPreviousBuild() != null ? script.currentBuild.getPreviousBuild().getResult() : null;
-        if (script.Result.FAILURE.toString().equals(prevResult) || script.Result.UNSTABLE.toString().equals(prevResult)) {
+        if (Result.FAILURE.toString().equals(prevResult) || Result.UNSTABLE.toString().equals(prevResult)) {
           subject += ' was fixed'
           fromAddress = 'build+ok@flowdock.com'
           break
