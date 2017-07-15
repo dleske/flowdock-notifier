@@ -48,19 +48,15 @@ def call(script, apiToken, tags = '') {
     println("Subject: ${subject}")
 
     StringBuilder content = new StringBuilder();
-    content.append("<h3>").append(script.env.JOB_BASE_NAME).append("</h3>");
+    def content = """<h3>${script.env.JOB_BASE_NAME}</h3>
+      Build: ${script.env.JOB_BASE_NAME}<br />
+      Result: <strong>${buildStatus}<br />
+      URL: <a href=\"${script.env.BUILD_URL}\">${script.currentBuild.fullDisplayName}</a><br />"""
 
-    println("Content: ${content}")
-
-    content.append("Build: ").append(script.currentBuild.displayName).append("<br />");
-
-    println("Content: ${content}")
-
-    //content.append("Result: <strong>").append(script.buildStatus).append("</strong><br />");
-
-    //println("Content: ${content}")
-
-    content.append("URL: <a href=\"").append(script.env.BUILD_URL).append("\">").append(script.currentBuild.fullDisplayName).append("</a>").append("<br />");
+    //content.append("<h3>").append(script.env.JOB_BASE_NAME).append("</h3>");
+    //content.append("Build: ").append(script.currentBuild.displayName).append("<br />");
+    //content.append("Result: <strong>").append(buildStatus).append("</strong><br />");
+    //content.append("URL: <a href=\"").append(script.env.BUILD_URL).append("\">").append(script.currentBuild.fullDisplayName).append("</a>").append("<br />");
 
     println("Content: ${content}")
 
