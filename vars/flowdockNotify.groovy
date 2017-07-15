@@ -1,4 +1,6 @@
-// this was cribbed from https://github.com/jenkinsci/flowdock-plugin/issues/24
+// Based on:
+// https://github.com/jenkinsci/flowdock-plugin/issues/24#issuecomment-271784565
+
 import groovy.json.JsonOutput
 import java.net.URLEncoder
 import hudson.model.Result
@@ -8,37 +10,47 @@ def call(script, apiToken, tags = '') {
     tags = tags.replaceAll("\\s","")
 
     def flowdockURL = "https://api.flowdock.com/v1/messages/team_inbox/${apiToken}"
-    def fromAddress = 'noreply+jenkins@computecanada.ca'
 
     // build status of null means successful
     def buildStatus =  script.currentBuild.result ? script.currentBuild.result : 'SUCCESS'
 
-    // create subject and update with build status
+    // create subject
     def subject = "${script.env.JOB_BASE_NAME} build ${script.currentBuild.displayName.replaceAll("#", "")}"
 
+    // we use the build+XX@flowdock.com addresses for their yay/nay avatars
+    def fromAddress = ''
+
+    // update subject and set from address based on build status
     switch (buildStatus) {
       case 'SUCCESS':
         def prevResult = script.currentBuild.getPreviousBuild() != null ? script.currentBuild.getPreviousBuild().getResult() : null;
         if (Result.FAILURE.toString().equals(prevResult) || Result.UNSTABLE.toString().equals(prevResult)) {
           subject += ' was fixed'
+          fromAddress = 'build+ok@flowdock.com'
           break
         }
         subject += ' was successful'
+        fromAddress = 'build+ok@flowdock.com'
         break
       case 'FAILURE':
         subject += ' failed'
+        fromAddress = 'build+fail@flowdock.com'
         break
       case 'UNSTABLE':
         subject += ' was unstable'
+        fromAddress = 'build+fail@flowdock.com'
         break
       case 'ABORTED':
         subject += ' was aborted'
+        fromAddress = 'build+fail@flowdock.com'
         break
       case 'NOT_BUILT':
         subject += ' was not built'
+        fromAddress = 'build+fail@flowdock.com'
         break
       case 'FIXED':
         subject = ' was fixed'
+        fromAddress = 'build+ok@flowdock.com'
         break
     }
 
