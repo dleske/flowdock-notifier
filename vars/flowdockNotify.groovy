@@ -49,6 +49,9 @@ def call(script, apiToken, tags = '') {
 
     StringBuilder content = new StringBuilder();
     content.append("<h3>").append(script.env.JOB_BASE_NAME).append("</h3>");
+
+    println("Content: ${content}")
+
     content.append("Build: ").append(script.currentBuild.displayName).append("<br />");
     content.append("Result: <strong>").append(script.buildStatus).append("</strong><br />");
     content.append("URL: <a href=\"").append(script.env.BUILD_URL).append("\">").append(script.currentBuild.fullDisplayName).append("</a>").append("<br />");
